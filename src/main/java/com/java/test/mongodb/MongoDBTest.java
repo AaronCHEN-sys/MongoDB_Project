@@ -5,7 +5,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,6 +104,64 @@ public class MongoDBTest {
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
+    }
+
+    /**
+     * 带条件查询一, 通过Lambda表达式遍历数据
+     */
+    @Test
+    public void test6() {
+        Document document1 = new Document("$gte", 20);
+        Document document2 = new Document("age", document1);
+        FindIterable<Document> documents = collection.find(document2);
+        MongoCursor<Document> iterator = documents.iterator();
+        iterator.forEachRemaining(temp -> System.out.println(temp));
+    }
+
+    /**
+     * 带条件查询二
+     */
+    @Test
+    public void test7() {
+        Document document = Document.parse("{\"age\":{\"$gte\":20}}");
+        FindIterable<Document> documents = collection.find(document);
+        MongoCursor<Document> iterator = documents.iterator();
+        iterator.forEachRemaining(temp -> System.out.println(temp));
+    }
+
+    /**
+     * 带条件查询三
+     */
+    @Test
+    public void test8() {
+        Bson bson = Filters.gte("age", 20);
+        FindIterable<Document> documents = collection.find(bson);
+        MongoCursor<Document> iterator = documents.iterator();
+        iterator.forEachRemaining(temp -> System.out.println(temp));
+    }
+
+    /**
+     * 带条件查询四
+     */
+    @Test
+    public void test9() {
+        Document document = Document.parse("{$and:[{\"age\":{\"$gt\":20}},{\"age\":{\"$lte\":25}}]}");
+        FindIterable<Document> documents = collection.find(document);
+        MongoCursor<Document> iterator = documents.iterator();
+        iterator.forEachRemaining(temp -> System.out.println(temp));
+    }
+
+    /**
+     * 带条件查询五
+     */
+    @Test
+    public void test10() {
+        Bson bson1 = Filters.gt("age", 20);
+        Bson bson2 = Filters.lte("age", 25);
+        Bson bson = Filters.and(bson1, bson2);
+        FindIterable<Document> documents = collection.find(bson);
+        MongoCursor<Document> iterator = documents.iterator();
+        iterator.forEachRemaining(temp -> System.out.println(temp));
     }
 
     /**
