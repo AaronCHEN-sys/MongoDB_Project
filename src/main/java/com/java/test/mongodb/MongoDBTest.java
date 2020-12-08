@@ -1,7 +1,9 @@
 package com.java.test.mongodb;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.junit.After;
@@ -86,9 +88,20 @@ public class MongoDBTest {
         System.out.println("时间:" + ((end - start) / 1000) + "秒");
     }
 
+    /**
+     * 分页查询
+     */
     @Test
     public void test5() {
-
+        FindIterable<Document> documents = collection.find();
+        //起始下标
+        documents.skip(0);
+        //每页显示的数据量
+        documents.limit(10);
+        MongoCursor<Document> iterator = documents.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
 
     /**
