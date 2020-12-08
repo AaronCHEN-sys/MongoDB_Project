@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -174,6 +175,16 @@ public class MongoDBTest {
         Document document2 = Document.parse("{$set:{\"name\":\"test\",\"age\":30}}");
         UpdateResult updateResult = collection.updateMany(document1, document2);
         System.out.println("updateResult=" + updateResult);
+    }
+
+    /**
+     * 删除数据
+     */
+    @Test
+    public void test12() {
+        Document document1 = Document.parse("{\"gender\":\"女\"}");
+        DeleteResult deleteResult = collection.deleteMany(document1);
+        System.out.println("deleteResult=" + deleteResult);
     }
 
     /**
