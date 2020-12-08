@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.junit.After;
@@ -162,6 +163,17 @@ public class MongoDBTest {
         FindIterable<Document> documents = collection.find(bson);
         MongoCursor<Document> iterator = documents.iterator();
         iterator.forEachRemaining(temp -> System.out.println(temp));
+    }
+
+    /**
+     * 修改数据
+     */
+    @Test
+    public void test11() {
+        Document document1 = Document.parse("{\"gender\":\"女\"}");
+        Document document2 = Document.parse("{$set:{\"name\":\"test\",\"age\":30}}");
+        UpdateResult updateResult = collection.updateMany(document1, document2);
+        System.out.println("updateResult=" + updateResult);
     }
 
     /**
